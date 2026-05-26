@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsil8i4lkxcr7"]
+
+[ext_resource type="Script" path="res://Scripts/Core/MainMenu.gd" id="1_jqjha"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_jqjha")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TrainLayer" type="Node2D" parent="."]
+
+[node name="TrainBody" type="ColorRect" parent="TrainLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Steam" type="CPUParticles2D" parent="TrainLayer/TrainBody"]
+position = Vector2(350, 0)
+amount = 20
+lifetime = 1.5
+direction = Vector2(0, -1)
+spread = 20.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 60.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+color = Color(0.6, 0.6, 0.6, 0.8)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TitleLabel" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="SubtitleLabel" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="StartButton" type="Button" parent="UI"]
+offset_right = 8.0
+offset_bottom = 8.0

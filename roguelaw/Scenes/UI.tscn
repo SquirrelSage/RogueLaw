@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://sbj2wfk4yn8o"]
+
+[ext_resource type="Script" path="res://Scripts/Core/DeathScreen.gd" id="1_wlt12"]
+
+[node name="Ui" type="Node2D"]
+script = ExtResource("1_wlt12")
+
+[node name="Screen" type="CanvasLayer" parent="."]
+
+[node name="VBox" type="VBoxContainer" parent="Screen"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 126.0
+
+[node name="WantedLabel" type="Label" parent="Screen/VBox"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="Screen/VBox"]
+layout_mode = 2
+
+[node name="CauseLabel" type="Label" parent="Screen/VBox"]
+layout_mode = 2
+
+[node name="StatsLabel" type="Label" parent="Screen/VBox"]
+layout_mode = 2
+
+[node name="RestartButton" type="Button" parent="Screen/VBox"]
+layout_mode = 2
