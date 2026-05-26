@@ -1,0 +1,110 @@
+[gd_scene load_steps=12 format=3 uid="uid://cv57q5tb53i6v"]
+
+[ext_resource type="Script" path="res://Scripts/Core/Ride.gd" id="1_bb0bd"]
+[ext_resource type="Texture2D" uid="uid://dh8vblb6dfnvp" path="res://Assets/Sprites/horse_mule_walk.png" id="2_fdv8e"]
+[ext_resource type="Texture2D" uid="uid://thxn5ntu0n68" path="res://Assets/Sprites/player_bobbing.png" id="3_66wf5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3snbw"]
+atlas = ExtResource("2_fdv8e")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrlgt"]
+atlas = ExtResource("2_fdv8e")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0c7u"]
+atlas = ExtResource("2_fdv8e")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4k4f5"]
+atlas = ExtResource("2_fdv8e")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tp7rv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3snbw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrlgt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0c7u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4k4f5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_an1du"]
+atlas = ExtResource("3_66wf5")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gvo25"]
+atlas = ExtResource("3_66wf5")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ka4gd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_an1du")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gvo25")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="Ride" type="Node2D"]
+script = ExtResource("1_bb0bd")
+
+[node name="Background" type="ParallaxBackground" parent="."]
+
+[node name="BackgroundLayer" type="ParallaxLayer" parent="Background"]
+motion_mirroring = Vector2(1280, 0)
+
+[node name="BackgroundRect" type="ColorRect" parent="Background/BackgroundLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Ground" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HorseSprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_tp7rv")
+
+[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_ka4gd")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="StaminaLabel" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DestinationLabel" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="EventPanel" type="PanelContainer" parent="UI"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/EventPanel"]
+layout_mode = 2
+
+[node name="EventLabel" type="Label" parent="UI/EventPanel/VBox"]
+layout_mode = 2
+
+[node name="EventOptions" type="VBoxContainer" parent="UI/EventPanel/VBox"]
+layout_mode = 2
