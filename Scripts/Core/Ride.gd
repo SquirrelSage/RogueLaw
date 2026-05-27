@@ -19,22 +19,22 @@ var riding = true
 func _ready() -> void:
 	# Setup background
 	background_rect.color = Color(0.53, 0.67, 0.82)
-	background_rect.size = Vector2(1280, 400)
+	background_rect.size = Vector2(320, 100)
 	
 	# Setup ground
 	ground.color = Color(0.6, 0.45, 0.25)
-	ground.size = Vector2(1280, 100)
-	ground.position = Vector2(0, 400)
+	ground.size = Vector2(320, 25)
+	ground.position = Vector2(0, 100)
 	
 	# Load sprites
 	horse_sprite.play("default")
-	horse_sprite.scale = Vector2(4, 4)
-	horse_sprite.position = Vector2(200, 390)
+	horse_sprite.scale = Vector2(1, 1)
+	horse_sprite.position = Vector2(50, 97)
 	horse_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	
 	player_sprite.play("default")
-	player_sprite.scale = Vector2(4, 4)
-	player_sprite.position = Vector2(200, 365)
+	player_sprite.scale = Vector2(1, 1)
+	player_sprite.position = Vector2(50, 88)
 	player_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	
 	# spawn crew riders
@@ -43,8 +43,8 @@ func _ready() -> void:
 		var crew_horse = AnimatedSprite2D.new()
 		crew_horse.sprite_frames = horse_sprite.sprite_frames
 		crew_horse.play("default")
-		crew_horse.scale = Vector2(4, 4)
-		crew_horse.position = Vector2(200 - (60 * (i + 1)), 400)
+		crew_horse.scale = Vector2(1, 1)
+		crew_horse.position = Vector2(50 - (20 * (i + 1)), 100)
 		crew_horse.modulate = crew_colors[i % crew_colors.size()]
 		crew_horse.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		add_child(crew_horse)
@@ -52,22 +52,29 @@ func _ready() -> void:
 		var crew_sprite = AnimatedSprite2D.new()
 		crew_sprite.sprite_frames = player_sprite.sprite_frames
 		crew_sprite.play("default")
-		crew_sprite.scale = Vector2(4, 4)
-		crew_sprite.position = Vector2(200 - (60 * (i + 1)), 375)
+		crew_sprite.scale = Vector2(1, 1)
+		crew_sprite.position = Vector2(50 - (20 * (i + 1)), 91)
 		crew_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		crew_sprite.modulate = crew_colors[i % crew_colors.size()]
 		add_child(crew_sprite)
 	
 	# UI
-	stamina_label.position = Vector2(10, 10)
-	destination_label.position = Vector2(10, 35)
+	stamina_label.position = Vector2(4, 4)
+	destination_label.position = Vector2(4, 14)
 	event_panel.visible = false
-	event_panel.position = Vector2(200, 150)
+	event_panel.position = Vector2(50, 40)
 	
 	var dest = RunData.current_location
 	destination_label.text = "Riding to: %s" % dest.location_name if dest else "Riding..."
 	
 	_update_stamina_label()
+	
+	#font stuff 
+	var font = load("res://Assets/Fonts/m5x7.ttf")
+	stamina_label.add_theme_font_override("font", font)
+	stamina_label.add_theme_font_size_override("font_size", 8)
+	destination_label.add_theme_font_override("font", font)
+	destination_label.add_theme_font_size_override("font_size", 8)
 
 func _process(delta: float) -> void:
 	if not riding:

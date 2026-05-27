@@ -21,6 +21,16 @@ func _ready() -> void:
 	close_button.pressed.connect(_close_panel)
 	building_panel.visible = false
 	_populate_buildings(town)
+	
+	var font = load("res://Assets/Fonts/m5x7.ttf")
+	var font_size = 8
+	
+	# Apply font to all static labels
+	for node in [location_name_label, sheriff_label, back_button, close_button]:
+		node.add_theme_font_override("font", font)
+		node.add_theme_font_size_override("font_size", font_size)
+
+# Apply to building buttons when populated
 
 func _populate_buildings(town) -> void:
 	for child in buildings_container.get_children():
@@ -29,6 +39,9 @@ func _populate_buildings(town) -> void:
 		var btn = Button.new()
 		btn.text = building.capitalize().replace("_", " ")
 		btn.pressed.connect(_on_building_clicked.bind(building))
+		var font = load("res://Assets/Fonts/m5x7.ttf")
+		btn.add_theme_font_override("font", font)
+		btn.add_theme_font_size_override("font_size", 8)
 		buildings_container.add_child(btn)
 
 func _on_building_clicked(building: String) -> void:

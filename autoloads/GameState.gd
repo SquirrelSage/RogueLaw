@@ -22,7 +22,8 @@ const SCENES = {
 }
 
 func _ready() -> void:
-	change_state(State.MAIN_MENU)
+	#change_state(State.MAIN_MENU)
+	pass
 
 
 func change_state(new_state: State) -> void:

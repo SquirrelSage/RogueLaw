@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bsil8i4lkxcr7"]
+[gd_scene load_steps=3 format=3 uid="uid://bsil8i4lkxcr7"]
 
 [ext_resource type="Script" path="res://Scripts/Core/MainMenu.gd" id="1_jqjha"]
+[ext_resource type="Theme" uid="uid://dpfjyivfi1dct" path="res://Assets/theme.tres" id="2_osnli"]
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_jqjha")
@@ -16,7 +17,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Steam" type="CPUParticles2D" parent="TrainLayer/TrainBody"]
-position = Vector2(350, 0)
+position = Vector2(88, -1)
 amount = 20
 lifetime = 1.5
 direction = Vector2(0, -1)
@@ -30,14 +31,25 @@ color = Color(0.6, 0.6, 0.6, 0.8)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="TitleLabel" type="Label" parent="UI"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="CenterContainer" type="CenterContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_osnli")
+metadata/_edit_lock_ = true
 
-[node name="SubtitleLabel" type="Label" parent="UI"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CenterContainer"]
+layout_mode = 2
+theme = ExtResource("2_osnli")
 
-[node name="StartButton" type="Button" parent="UI"]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="TitleLabel" type="Label" parent="UI/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SubtitleLabel" type="Label" parent="UI/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="UI/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_osnli")

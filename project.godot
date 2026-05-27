@@ -20,6 +20,20 @@ EventBus="*res://autoloads/EventBus.gd"
 GameState="*res://autoloads/GameState.gd"
 RunData="*res://autoloads/RunData.gd"
 
+[display]
+
+window/size/viewport_width=320
+window/size/viewport_height=180
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/scale_mode="integer"
+
+[gui]
+
+theme/custom="res://Assets/theme.tres"
+theme/custom_font="res://Assets/Fonts/m5x7.ttf"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

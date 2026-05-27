@@ -6,22 +6,31 @@ extends Node2D
 @onready var heat_label = $UI/PlayerInfo/HeatLabel
 @onready var health_label = $UI/PlayerInfo/HealthLabel
 @onready var crew_label = $UI/PlayerInfo/CrewLabel
+@onready var map_buttons = $UI/MapButtons
 
 var current_location_index: int = 0
+var font: Font
 
 func _ready() -> void:
-	$RegionMap.position = Vector2.ZERO
+	font = load("res://Assets/Fonts/m5x7.ttf")
+	$RegionMap.position = Vector2(160, 90)
 	if not RunData.region_generated:
 		_generate_region()
 	else:
 		current_location_index = RunData.current_location_index
 	_draw_map()
 	_update_ui()
+	_apply_font()
 	EventBus.money_changed.connect(_on_money_changed)
 	EventBus.heat_changed.connect(_on_heat_changed)
 	EventBus.health_changed.connect(_on_health_changed)
 	EventBus.crew_member_added.connect(_on_crew_changed)
 	EventBus.crew_member_died.connect(_on_crew_changed)
+
+func _apply_font() -> void:
+	for label in [name_label, money_label, heat_label, health_label, crew_label]:
+		label.add_theme_font_override("font", font)
+		label.add_theme_font_size_override("font_size", 8)
 
 func _update_ui() -> void:
 	name_label.text = RunData.player_name
@@ -72,19 +81,33 @@ func _generate_region() -> void:
 func _draw_map() -> void:
 	for child in town_nodes.get_children():
 		child.queue_free()
+	for child in map_buttons.get_children():
+		child.queue_free()
 
 	var region = RunData.current_region
 	if region == null:
 		return
+
+	for conn in region.connections:
+		var line = Line2D.new()
+		line.add_point(region.locations[conn[0]].position - Vector2(160,90))
+		line.add_point(region.locations[conn[1]].position - Vector2(160, 90))
+		line.width = 0.5
+		line.default_color = Color.WHITE
+		town_nodes.add_child(line)
 
 	var neighbors = _get_neighbors(current_location_index)
 
 	for i in range(region.locations.size()):
 		var loc = region.locations[i]
 		var btn = Button.new()
-		btn.position = loc.position
+		btn.position = loc.position + Vector2(160, 90)
+		btn.custom_minimum_size = Vector2(40, 12)
 
-		# Label by type
+		var style = StyleBoxFlat.new()
+		style.bg_color = Color(0.2, 0.2, 0.2)
+		btn.add_theme_stylebox_override("normal", style)
+
 		match loc.location_type:
 			LocationData.Type.TOWN:
 				btn.text = loc.location_name
@@ -104,9 +127,11 @@ func _draw_map() -> void:
 			btn.disabled = true
 			btn.modulate = Color(0.4, 0.4, 0.4)
 
-		town_nodes.add_child(btn)
+		if font:
+			btn.add_theme_font_override("font", font)
+			btn.add_theme_font_size_override("font_size", 7)
 
-	queue_redraw()
+		map_buttons.add_child(btn)
 
 func _on_location_clicked(index: int) -> void:
 	var region = RunData.current_region
@@ -116,32 +141,26 @@ func _on_location_clicked(index: int) -> void:
 	RunData.current_location_index = index
 	RunData.current_location = loc
 
-	# Exit node — move to next region
 	if loc.location_type == LocationData.Type.EXIT:
 		_enter_exit(loc)
 		return
 
-	# Camp — no town scene, just a quick event (stub for now)
 	if loc.location_type == LocationData.Type.CAMP:
 		RunData.current_location = loc
 		EventBus.town_entered.emit(loc)
 		GameState.change_state(GameState.State.TOWN)
 		return
 
-	# Crossroads — travel event only (stub for now, goes to town)
 	if loc.location_type == LocationData.Type.CROSSROADS:
 		RunData.current_location = loc
 		EventBus.town_entered.emit(loc)
 		GameState.change_state(GameState.State.TOWN)
 		return
 
-	# Town — ride then enter
 	EventBus.town_entered.emit(loc)
 	GameState.change_state(GameState.State.RIDE)
 
 func _enter_exit(loc: LocationData) -> void:
-	# Stub — crossing event will go here
-	# For now just generate next region and reload map
 	RunData.region_index += 1
 	if RunData.region_index >= RegionData.Type.size():
 		RunData.region_index = RegionData.Type.size() - 1
@@ -150,12 +169,3 @@ func _enter_exit(loc: LocationData) -> void:
 	current_location_index = 0
 	_generate_region()
 	_draw_map()
-
-func _draw() -> void:
-	var region = RunData.current_region
-	if region == null:
-		return
-	for conn in region.connections:
-		var a = region.locations[conn[0]].position
-		var b = region.locations[conn[1]].position
-		draw_line(a, b, Color.WHITE, 1.0)
